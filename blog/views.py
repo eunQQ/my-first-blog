@@ -1,5 +1,11 @@
 from django.shortcuts import render
+from django.utils import timezone
+from .models import Post
 
-# Create your views here.
 def post_list(request):
-    return render(request, 'blog/post_list.html', {})
+    # posts: QuerySet의 이름
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    # request: 사용자가 요청하는 모든 것
+    # 'blog/post_list.html': 템플릿
+    # {}: 템플릿을 사용하기 위해 이곳에 매개변수를 추가
+    return render(request, 'blog/post_list.html', {'posts': posts})
